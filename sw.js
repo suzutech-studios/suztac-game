@@ -1,25 +1,18 @@
-const CACHE_NAME = 'suztac-cache-v1';
+const CACHE_NAME = 'suztac-cache-v2';
 const urlsToCache = [
-  '.',
+  './',
   './index.html',
-  './index.tsx',
-  './App.tsx',
-  './types.ts',
-  './components/Board.tsx',
-  './components/Square.tsx',
   './manifest.json',
-  './play_store_512.png',
-  'https://cdn.tailwindcss.com',
-  'https://esm.sh/react@^19.1.1',
-  'https://esm.sh/react-dom@^19.1.1/client',
-  'https://esm.sh/react@^19.1.1/jsx-runtime'
+  './512.png'
 ];
 
 self.addEventListener('install', event => {
+  // Perform install steps
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
         console.log('Opened cache');
+        // We don't cache the dynamic JS imports here as they are handled by the fetch event
         return cache.addAll(urlsToCache);
       })
   );
@@ -34,17 +27,13 @@ self.addEventListener('fetch', event => {
           return response;
         }
 
-        // Clone the request because it's a stream and can only be consumed once.
         const fetchRequest = event.request.clone();
 
         return fetch(fetchRequest).then(
           response => {
-            // Check if we received a valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              if (response && response.type === 'opaque') {
-                // For opaque responses (like from esm.sh), we can't check status, so just return it.
-                return response;
-              }
+            // Check if we received a valid response.
+            // Opaque responses (from CDN) don't have a status we can check, but they are fine to cache.
+            if (!response || (response.status !== 200 && response.type !== 'opaque')) {
               return response;
             }
 
