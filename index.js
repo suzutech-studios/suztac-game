@@ -9,7 +9,5 @@ if (!rootElement) {
 
 const root = ReactDOM.createRoot(rootElement);
 root.render(
-  React.createElement(React.StrictMode, null,
-    React.createElement(App, null)
-  )
+  React.createElement(App, null)
 );
