@@ -1,9 +1,13 @@
-const CACHE_NAME = 'suztac-cache-v5';
+const CACHE_NAME = 'suztac-cache-v6';
 const urlsToCache = [
   './',
   './index.html',
   './manifest.json',
-  './512.png'
+  './512.png',
+  './index.js',
+  './App.js',
+  './components/Board.js',
+  './components/Square.js'
 ];
 
 self.addEventListener('install', event => {
