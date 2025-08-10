@@ -1,4 +1,4 @@
-const CACHE_NAME = 'suztac-cache-v2';
+const CACHE_NAME = 'suztac-cache-v3';
 const urlsToCache = [
   './',
   './index.html',
