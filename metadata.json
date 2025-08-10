@@ -1,0 +1,5 @@
+{
+  "name": "SuzTac",
+  "description": "A simple Tic-Tac-Toe game where you play against an easy AI.",
+  "requestFramePermissions": []
+}
