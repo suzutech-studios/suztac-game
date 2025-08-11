@@ -13,24 +13,12 @@
     "react": "https://jspm.dev/react@18.3.1",
     "react-dom/client": "https://jspm.dev/react-dom@18.3.1/client",
     "react/jsx-runtime": "https://jspm.dev/react@18.3.1/jsx-runtime"
+  }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
 <body class="bg-gray-900">
   <div id="root"></div>
   <script type="module" src="./index.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').then(registration => {
-          console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }, err => {
-          console.log('ServiceWorker registration failed: ', err);
-        });
-      });
-    }
-  </script>
-<script type="module" src="/index.tsx"></script>
 </body>
 </html>
