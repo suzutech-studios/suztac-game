@@ -1,8 +1,6 @@
 import React from 'react';
 import Board from './components/Board.js';
 
-const { useState, useEffect, useCallback } = React;
-
 const initialBoard = Array(9).fill(null);
 
 const calculateWinner = (currentBoard) => {
@@ -21,11 +19,11 @@ const calculateWinner = (currentBoard) => {
 };
 
 const App = () => {
-  const [board, setBoard] = useState(initialBoard);
-  const [isPlayerTurn, setIsPlayerTurn] = useState(true);
-  const [winnerInfo, setWinnerInfo] = useState({ winner: null, line: null });
+  const [board, setBoard] = React.useState(initialBoard);
+  const [isPlayerTurn, setIsPlayerTurn] = React.useState(true);
+  const [winnerInfo, setWinnerInfo] = React.useState({ winner: null, line: null });
 
-  useEffect(() => {
+  React.useEffect(() => {
     const { winner, line } = calculateWinner(board);
     if (winner) {
       setWinnerInfo({ winner, line });
@@ -34,7 +32,7 @@ const App = () => {
     }
   }, [board]);
 
-  const aiMove = useCallback(() => {
+  const aiMove = React.useCallback(() => {
     const makeMove = (index) => {
       const newBoard = [...board];
       newBoard[index] = 'O';
@@ -91,7 +89,7 @@ const App = () => {
     }
   }, [board]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!isPlayerTurn && !winnerInfo.winner) {
       const timer = setTimeout(() => {
         aiMove();
