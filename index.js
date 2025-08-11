@@ -1,14 +1,11 @@
-// Diagnostic test to see if any JS can execute.
-document.addEventListener('DOMContentLoaded', () => {
-  const rootElement = document.getElementById('root');
-  if (rootElement) {
-    rootElement.style.backgroundColor = 'blue';
-    rootElement.style.textAlign = 'center';
-    rootElement.style.paddingTop = '50px';
-    rootElement.innerHTML = '<h1 style="color: white; font-family: sans-serif; font-size: 2rem;">Hello World</h1>';
-  } else {
-    // Fallback if the root element isn't found for some reason
-    document.body.style.backgroundColor = 'red';
-    document.body.innerHTML = '<h1 style="color: white; font-family: sans-serif; font-size: 2rem; text-align: center; padding-top: 50px;">Hello World - No Root Found</h1>';
-  }
-});
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.js';
+
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error("Could not find root element to mount to");
+}
+
+const root = ReactDOM.createRoot(rootElement);
+root.render(React.createElement(App));

@@ -1,60 +1,29 @@
-const CACHE_NAME = 'suztac-cache-v8';
+const CACHE_NAME = 'suztac-cache-v12';
 const urlsToCache = [
   './',
   './index.html',
   './manifest.json',
-  './512.png',
+  './icon-192.svg',
+  './icon-512.svg',
   './index.js',
   './App.js',
   './components/Board.js',
   './components/Square.js'
 ];
 
+// Install the service worker and cache all the core assets
 self.addEventListener('install', event => {
-  // Perform install steps
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Opened cache');
-        // We don't cache the dynamic JS imports here as they are handled by the fetch event
+        console.log('Opened cache and caching core assets');
         return cache.addAll(urlsToCache);
       })
   );
+  self.skipWaiting();
 });
 
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-
-        const fetchRequest = event.request.clone();
-
-        return fetch(fetchRequest).then(
-          response => {
-            // Check if we received a valid response.
-            // Opaque responses (from CDN) don't have a status we can check, but they are fine to cache.
-            if (!response || (response.status !== 200 && response.type !== 'opaque')) {
-              return response;
-            }
-
-            const responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          }
-        );
-      })
-  );
-});
-
+// Activate event to clean up old caches
 self.addEventListener('activate', event => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
@@ -62,10 +31,29 @@ self.addEventListener('activate', event => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheWhitelist.indexOf(cacheName) === -1) {
+            console.log('Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
+    })
+  );
+  return self.clients.claim();
+});
+
+// Network falling back to cache strategy
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    fetch(event.request).then(networkResponse => {
+      // If the fetch is successful, clone it and cache it.
+      const responseToCache = networkResponse.clone();
+      caches.open(CACHE_NAME).then(cache => {
+        cache.put(event.request, responseToCache);
+      });
+      return networkResponse;
+    }).catch(() => {
+      // If the network request fails (e.g., offline), serve from the cache.
+      return caches.match(event.request);
     })
   );
 });

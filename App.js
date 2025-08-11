@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import Board from './components/Board.js';
+
+const { useState, useEffect, useCallback } = React;
 
 const initialBoard = Array(9).fill(null);
 
@@ -17,7 +19,6 @@ const calculateWinner = (currentBoard) => {
   }
   return { winner: null, line: null };
 };
-
 
 const App = () => {
   const [board, setBoard] = useState(initialBoard);
