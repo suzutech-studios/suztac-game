@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.suzutech_studios.suztac_game",
+      "sha256_cert_fingerprints": [
+        "4B:7A:77:71:1F:4E:C8:6D:E3:18:ED:3C:97:52:C7:37:F9:94:20:85:51:F1:07:C7:B4:FB:1F:D3:7E:2E:C0:9B"
+      ]
+    }
+  }
+]
